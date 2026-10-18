@@ -1,5 +1,4 @@
 name: Monitorizare Web Automatizata
-FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
 
 # Definește când rulează scriptul
 on:
