@@ -7,8 +7,6 @@ from bs4 import BeautifulSoup
 from google import genai
 from google.genai import types
 
-FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true
-
 # Citim datele sensibile din variabilele de mediu furnizate de GitHub
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 GMAIL_USER = os.environ.get("GMAIL_USER")
