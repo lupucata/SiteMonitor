@@ -5,6 +5,8 @@ from email.mime.multipart import MIMEMultipart
 import requests
 from bs4 import BeautifulSoup
 from google import genai
+from google.genai import types
+
 
 # Citim datele sensibile din variabilele de mediu furnizate de GitHub
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
