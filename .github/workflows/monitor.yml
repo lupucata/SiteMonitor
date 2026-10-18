@@ -1,0 +1,48 @@
+name: Monitorizare Web Automatizata
+
+# Definește când rulează scriptul
+on:
+  schedule:
+    # Sintaxă Cron: Rulează la minutul 0 al fiecărei ore (ex: 1:00, 2:00, 3:00 etc.)
+    - cron: '0 * * * *'
+  workflow_dispatch: # Îți permite să declanșezi rularea și manual din interfața GitHub
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Copiază codul din repository
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    # 2. Configurează mediul Python
+    - name: Set up Python
+      uses: actions/python@v5
+      with:
+        python-version: '3.11'
+
+    # 3. Instalează dependențele
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Rulează scriptul transmisiune securizată a datelor
+    - name: Run monitoring script
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GMAIL_USER: ${{ secrets.GMAIL_USER }}
+        GMAIL_PASS: ${{ secrets.GMAIL_PASS }}
+      run: python monitor_agent.py
+
+    # 5. Salvează starea paginii (last_state.txt) în GitHub pentru următoarea rulare
+    - name: Commit and push updated state
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action Bot"
+        git add last_state.txt || true
+        git diff-index --quiet HEAD || git commit -m "Auto-update last state [skip ci]"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
